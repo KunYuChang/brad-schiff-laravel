@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -10,6 +11,7 @@ class PostController extends Controller
     // https://laravel.com/docs/10.x/routing#route-model-binding
     public function viewSinglePost(Post $post)
     {
+        $post['body'] = strip_tags(Str::markdown($post->body), '<p><ul><ol><li><br>');
         return view('single-post', ['post' => $post]);
     }
 
