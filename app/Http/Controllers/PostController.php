@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function delete(Post $post)
+    {
+        if (auth()->user()->cannot('delete', $post)) {
+            return '你不能刪除此文章';
+        }
+        $post->delete();
+
+        return redirect('/profile/' . auth()->user()->username)->with('success', '文章刪除成功。');
+    }
+
     // https://laravel.com/docs/10.x/routing#route-model-binding
     public function viewSinglePost(Post $post)
     {

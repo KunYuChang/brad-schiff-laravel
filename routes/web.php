@@ -25,3 +25,8 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
 Route::get('/create-post', [PostController::class, 'showCreateForm'])->middleware('mustBeLoggedIn');
 Route::post('/create-post', [PostController::class, 'storeNewPost'])->middleware('mustBeLoggedIn');
 Route::get('/post/{post}', [PostController::class, 'viewSinglePost']);
+Route::delete('/post/{post}', [PostController::class, 'delete']);
+
+
+// 個人檔案相關路由
+Route::get('/profile/{user:username}', [UserController::class, 'profile']);
