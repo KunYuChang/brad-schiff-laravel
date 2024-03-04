@@ -8,11 +8,28 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function actuallyUpdate(PoST $post, Request $request)
+    {
+        $incomingFields = $request->validate([
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+
+        $incomingFields['title'] = strip_tags($incomingFields['title']);
+        $incomingFields['body'] = strip_tags($incomingFields['body']);
+
+        $post->update($incomingFields);
+
+        return back()->with('success', '文章更新成功。');
+    }
+
+    public function showEditForm(Post $post)
+    {
+        return view('edit-post', ['post' => $post]);
+    }
+
     public function delete(Post $post)
     {
-        if (auth()->user()->cannot('delete', $post)) {
-            return '你不能刪除此文章';
-        }
         $post->delete();
 
         return redirect('/profile/' . auth()->user()->username)->with('success', '文章刪除成功。');
